@@ -1,0 +1,1413 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imersão em Produção de Vídeo — Apostila Completa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================
+       RESET & BASE
+    ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:     #F5A623;
+      --gold-lt:  #FFD07B;
+      --gold-dk:  #C47D0E;
+      --dark:     #08080D;
+      --dark-2:   #0F0F18;
+      --dark-3:   #161625;
+      --dark-4:   #1E1E30;
+      --dark-5:   #252538;
+      --blue:     #4A8FE2;
+      --blue-lt:  #7AB4FF;
+      --white:    #F0EEE9;
+      --gray:     #9898A8;
+      --accent-r: #E25A4A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* ============================================
+       PRINT LAYOUT
+    ============================================ */
+    @media print {
+      body { background: #fff; color: #111; font-size: 11pt; }
+      .page { page-break-after: always; break-after: page; box-shadow: none !important; background: #fff !important; }
+      .cover-page { background: #0A0A14 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .module-card { border: 1px solid #ddd !important; }
+      nav { display: none !important; }
+    }
+
+    /* ============================================
+       NAV
+    ============================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 999;
+      background: rgba(8,8,13,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(245,166,35,0.2);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.04em;
+    }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .btn-print {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+      color: #000;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-print:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ============================================
+       PAGES
+    ============================================ */
+    .page {
+      max-width: 960px;
+      margin: 0 auto 60px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      position: relative;
+    }
+
+    /* ============================================
+       COVER PAGE
+    ============================================ */
+    .cover-page {
+      background: var(--dark-2);
+      min-height: 580px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 80px;
+    }
+
+    .cover-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('img/cover_background.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+    }
+
+    .cover-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(8,8,13,0.6) 0%,
+        rgba(8,8,13,0.3) 40%,
+        rgba(245,166,35,0.08) 100%
+      );
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 2;
+      padding: 60px 64px 0;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,166,35,0.15);
+      border: 1px solid rgba(245,166,35,0.35);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .cover-badge::before {
+      content: '';
+      display: block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .cover-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.6rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .cover-title .line-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 60%, #FFEEAA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cover-subtitle {
+      font-size: 1.1rem;
+      color: rgba(240,238,233,0.7);
+      max-width: 520px;
+      font-weight: 400;
+      margin-bottom: 48px;
+    }
+
+    .cover-stats {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .cover-footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(245,166,35,0.15);
+      padding: 24px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cover-author {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    .cover-author strong { color: var(--white); }
+
+    .cover-days {
+      display: flex;
+      gap: 12px;
+    }
+    .day-tag {
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .day-tag.d1 { background: rgba(245,166,35,0.2); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+    .day-tag.d2 { background: rgba(74,143,226,0.2); color: var(--blue-lt); border: 1px solid rgba(74,143,226,0.3); }
+
+    /* ============================================
+       SECTION PAGES
+    ============================================ */
+    .section-page {
+      background: var(--dark-3);
+      padding: 0;
+    }
+
+    .section-header {
+      padding: 48px 56px 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .section-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    .day1 .section-header::before { background: linear-gradient(180deg, var(--gold), var(--gold-dk)); }
+    .day2 .section-header::before { background: linear-gradient(180deg, var(--blue), #2E5EAA); }
+
+    .section-day-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .day1 .section-day-label { color: var(--gold); }
+    .day2 .section-day-label { color: var(--blue-lt); }
+
+    .section-time {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--gray);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-time::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--gray);
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .day1 .section-title { color: var(--white); }
+    .day2 .section-title { color: var(--white); }
+
+    .section-icon {
+      position: absolute;
+      right: 56px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 5rem;
+      opacity: 0.06;
+    }
+
+    .section-body {
+      padding: 40px 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .section-body.single-col {
+      grid-template-columns: 1fr;
+    }
+    .section-body.img-left {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .section-img {
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .section-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px;
+      min-height: 220px;
+    }
+    .section-img-caption {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--gray);
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .section-content {}
+
+    .content-intro {
+      font-size: 1rem;
+      color: rgba(240,238,233,0.8);
+      margin-bottom: 28px;
+      font-weight: 400;
+      line-height: 1.75;
+    }
+
+    .topic-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .topic-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: border-color 0.2s;
+    }
+    .topic-item:hover { border-color: rgba(245,166,35,0.2); }
+
+    .topic-icon {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .day1 .topic-icon { background: rgba(245,166,35,0.15); }
+    .day2 .topic-icon { background: rgba(74,143,226,0.15); }
+
+    .topic-text {}
+    .topic-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .topic-desc {
+      font-size: 0.8rem;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       HIGHLIGHT BOXES
+    ============================================ */
+    .highlight-box {
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .highlight-gold {
+      background: rgba(245,166,35,0.08);
+      border: 1px solid rgba(245,166,35,0.25);
+    }
+    .highlight-blue {
+      background: rgba(74,143,226,0.08);
+      border: 1px solid rgba(74,143,226,0.25);
+    }
+    .highlight-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .highlight-text { font-size: 0.84rem; line-height: 1.65; }
+    .highlight-gold .highlight-text { color: rgba(255,208,123,0.9); }
+    .highlight-blue .highlight-text { color: rgba(122,180,255,0.9); }
+    .highlight-text strong { font-weight: 700; }
+
+    /* ============================================
+       DAY DIVIDER PAGE
+    ============================================ */
+    .day-divider {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .day-divider-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+    }
+    .day1-div { background: linear-gradient(135deg, var(--dark-3), #201808); }
+    .day2-div { background: linear-gradient(135deg, var(--dark-3), #080E20); }
+
+    .day-divider-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10rem;
+      font-weight: 900;
+      line-height: 1;
+      opacity: 0.06;
+      position: absolute;
+      letter-spacing: -0.04em;
+    }
+    .day1-div .day-divider-num { color: var(--gold); }
+    .day2-div .day-divider-num { color: var(--blue); }
+
+    .day-divider-content { position: relative; z-index: 2; }
+
+    .day-divider-tag {
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .day1-div .day-divider-tag { background: rgba(245,166,35,0.15); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+    .day2-div .day-divider-tag { background: rgba(74,143,226,0.15); color: var(--blue-lt); border: 1px solid rgba(74,143,226,0.3); }
+
+    .day-divider-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .day-divider-sub {
+      font-size: 1rem;
+      color: var(--gray);
+      max-width: 480px;
+    }
+
+    /* ============================================
+       SCHEDULE TABLE
+    ============================================ */
+    .schedule-page {
+      background: var(--dark-3);
+      padding: 48px 56px;
+    }
+    .schedule-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 28px;
+    }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .schedule-table th {
+      text-align: left;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      padding: 0 16px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .schedule-table td {
+      padding: 14px 16px;
+      font-size: 0.86rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+    }
+    .schedule-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .time-cell {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--gray);
+      font-size: 0.8rem;
+    }
+    .module-cell { color: var(--white); font-weight: 500; }
+    .module-cell .module-sub { font-size: 0.76rem; color: var(--gray); margin-top: 3px; font-weight: 400; }
+
+    .sched-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .sched-d1 { background: rgba(245,166,35,0.15); color: var(--gold); }
+    .sched-d2 { background: rgba(74,143,226,0.15); color: var(--blue-lt); }
+    .sched-break { background: rgba(255,255,255,0.08); color: var(--gray); }
+
+    .lunch-row td { color: var(--gray); font-style: italic; }
+
+    /* ============================================
+       PPP SECTION
+    ============================================ */
+    .ppp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .ppp-card {
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ppp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .ppp-p { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2); }
+    .ppp-pp { background: rgba(74,143,226,0.08); border: 1px solid rgba(74,143,226,0.2); }
+    .ppp-ppp { background: rgba(226,90,74,0.08); border: 1px solid rgba(226,90,74,0.2); }
+    .ppp-p::before { background: var(--gold); }
+    .ppp-pp::before { background: var(--blue); }
+    .ppp-ppp::before { background: var(--accent-r); }
+
+    .ppp-letter {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .ppp-p .ppp-letter { color: var(--gold); }
+    .ppp-pp .ppp-letter { color: var(--blue-lt); }
+    .ppp-ppp .ppp-letter { color: var(--accent-r); }
+
+    .ppp-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    .ppp-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.55; }
+
+    /* ============================================
+       BUSINESS MODULE
+    ============================================ */
+    .business-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .biz-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 22px;
+    }
+    .biz-card:hover { border-color: rgba(74,143,226,0.3); }
+    .biz-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--blue-lt);
+      opacity: 0.5;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .biz-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
+    .biz-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.55; }
+
+    /* ============================================
+       CLOSING PAGE
+    ============================================ */
+    .closing-page {
+      background: linear-gradient(135deg, var(--dark-2), #0D0A00);
+      padding: 72px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .closing-glow {
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+    .closing-content { position: relative; z-index: 2; }
+    .closing-icon { font-size: 3rem; margin-bottom: 24px; }
+    .closing-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .closing-sub {
+      font-size: 1.05rem;
+      color: rgba(240,238,233,0.65);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+    .closing-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 0 auto 40px;
+      border-radius: 2px;
+    }
+    .closing-quote {
+      font-size: 1rem;
+      color: var(--gray);
+      font-style: italic;
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    .closing-quote::before,
+    .closing-quote::after { content: '"'; color: var(--gold); font-style: normal; }
+
+    /* ============================================
+       WRAPPER
+    ============================================ */
+    .main-wrapper {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    /* ============================================
+       SEPARATOR
+    ============================================ */
+    .page-sep {
+      height: 32px;
+    }
+
+    /* scroll animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="no-print">
+  <span class="nav-logo">🎬 IMERSÃO EM VÍDEO</span>
+  <div class="nav-links">
+    <a href="#dia1">Dia 1</a>
+    <a href="#dia2">Dia 2</a>
+    <a href="#cronograma">Cronograma</a>
+  </div>
+  <button class="btn-print" onclick="window.print()">⬇ Exportar PDF</button>
+</nav>
+
+<div class="main-wrapper">
+
+  <!-- ===================== COVER ===================== -->
+  <div class="page cover-page fade-in" id="capa">
+    <div class="cover-bg"></div>
+    <div class="cover-gradient"></div>
+
+    <div class="cover-content">
+      <div class="cover-badge">Apostila Oficial · Edição Exclusiva</div>
+
+      <h1 class="cover-title">
+        <span class="line-gold">Imersão em</span><br/>
+        Produção de Vídeo
+      </h1>
+
+      <p class="cover-subtitle">
+        Do equipamento ao contrato fechado — domine câmera, luz, áudio,
+        roteiro, edição e a arte de vender produção audiovisual.
+      </p>
+
+      <div class="cover-stats">
+        <div class="stat-item">
+          <span class="stat-number">2</span>
+          <span class="stat-label">Dias intensivos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">9</span>
+          <span class="stat-label">Módulos práticos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">20h</span>
+          <span class="stat-label">De imersão total</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Prático e aplicável</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-author">
+        Material desenvolvido para uso exclusivo dos participantes
+      </div>
+      <div class="cover-days">
+        <span class="day-tag d1">📷 Dia 1 — Fundamentos</span>
+        <span class="day-tag d2">🎬 Dia 2 — Campo de Batalha</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- ===================== CRONOGRAMA ===================== -->
+  <div class="page schedule-page fade-in" id="cronograma">
+    <h2 class="schedule-title">📋 Cronograma Completo da Imersão</h2>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Horário</th>
+          <th>Módulo</th>
+          <th>Dia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="time-cell">09:00 – 10:30</td>
+          <td class="module-cell">A Máquina — Câmera &amp; Mobile Pro
+            <div class="module-sub">Tríade da exposição · DSLR/Mirrorless · Smartphones</div>
+          </td>
+          <td><span class="sched-badge sched-d1">Dia 1</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">10:30 – 12:30</td>
+          <td class="module-cell">O Domínio da Luz
+            <div class="module-sub">Física da iluminação · Esquemas 1, 2 e 3 pontos · Luz natural</div>
+          </td>
+          <td><span class="sched-badge sched-d1">Dia 1</span></td>
+        </tr>
+        <tr class="lunch-row">
+          <td class="time-cell">12:30 – 13:30</td>
+          <td class="module-cell">⏸ Pausa para Almoço</td>
+          <td><span class="sched-badge sched-break">Break</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">13:30 – 14:30</td>
+          <td class="module-cell">Áudio e Cenografia
+            <div class="module-sub">Posicionamento de microfones · Composição de cenário</div>
+          </td>
+          <td><span class="sched-badge sched-d1">Dia 1</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">14:30 – 15:30</td>
+          <td class="module-cell">Consultoria de Equipamentos
+            <div class="module-sub">Análise individual · Celular x Câmera · Guia de investimento</div>
+          </td>
+          <td><span class="sched-badge sched-d1">Dia 1</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">15:30 – 17:00</td>
+          <td class="module-cell">Roteirização Estratégica com IA
+            <div class="module-sub">Estrutura PPP · IA aplicada · Roteiro do aluno</div>
+          </td>
+          <td><span class="sched-badge sched-d1">Dia 1</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">17:00 – 19:00</td>
+          <td class="module-cell">Direção de Pessoas e Teleprompter
+            <div class="module-sub">Set ao vivo · Destravando o cliente · Leitura fluida</div>
+          </td>
+          <td><span class="sched-badge sched-d1">Dia 1</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">09:00 – 12:30</td>
+          <td class="module-cell">Gravação Real — Portfólio
+            <div class="module-sub">Controle total do estúdio · Gravação definitiva</div>
+          </td>
+          <td><span class="sched-badge sched-d2">Dia 2</span></td>
+        </tr>
+        <tr class="lunch-row">
+          <td class="time-cell">12:30 – 13:30</td>
+          <td class="module-cell">⏸ Pausa para Almoço</td>
+          <td><span class="sched-badge sched-break">Break</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">13:30 – 17:30</td>
+          <td class="module-cell">Pós-Produção e Fluxo de Trabalho
+            <div class="module-sub">Premiere · CapCut Pro · Legendas · Exportação final</div>
+          </td>
+          <td><span class="sched-badge sched-d2">Dia 2</span></td>
+        </tr>
+        <tr>
+          <td class="time-cell">17:30 – 19:00</td>
+          <td class="module-cell">O Módulo Business — A Arte de Vender
+            <div class="module-sub">Prospecção · Parcerias · Precificação · Negociação</div>
+          </td>
+          <td><span class="sched-badge sched-d2">Dia 2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== DIA 1 DIVIDER =================== -->
+  <div class="page day-divider day1-div fade-in" id="dia1">
+    <span class="day-divider-num">01</span>
+    <div class="day-divider-content">
+      <div class="day-divider-tag">📷 Dia Um</div>
+      <h2 class="day-divider-title">Fundamentos, Equipamento,<br/>Roteiro e Prática de Direção</h2>
+      <p class="day-divider-sub">O dia para dominar as ferramentas, saber onde investir, criar o conteúdo e destravar a postura diante das câmeras.</p>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 1 =================== -->
+  <div class="page section-page day1 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 1 · Módulo 1</div>
+      <div class="section-time">09:00 – 10:30</div>
+      <h2 class="section-title">📷 A Máquina<br/><span style="font-weight:400; font-size:0.7em; color: var(--gray);">Câmera e Mobile Pro</span></h2>
+      <div class="section-icon">📷</div>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <p class="content-intro">
+          Entender como a câmera "pensa" é o que separa amadores de profissionais.
+          Neste módulo você dominará os três controles fundamentais que determinam
+          qualidade e linguagem cinematográfica em qualquer câmera — até mesmo no celular.
+        </p>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon">🔺</div>
+            <div class="topic-text">
+              <div class="topic-title">A Tríade da Exposição</div>
+              <div class="topic-desc">ISO, Diafragma e Obturador — como cada parâmetro afeta a imagem e como equilibrá-los para máxima qualidade.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">📸</div>
+            <div class="topic-text">
+              <div class="topic-title">DSLR e Mirrorless</div>
+              <div class="topic-desc">Configurações exatas para nitidez máxima: perfil de cor, picture profile, frame rate e shutter rule (180°).</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">📱</div>
+            <div class="topic-text">
+              <div class="topic-title">Smartphone como Câmera Pro</div>
+              <div class="topic-desc">Apps de controle manual, estabilização, lentes externas e configurações de codec para linguagem cinematográfica no celular.</div>
+            </div>
+          </li>
+        </ul>
+        <div class="highlight-box highlight-gold">
+          <div class="highlight-icon">💡</div>
+          <div class="highlight-text"><strong>Regra de Ouro:</strong> O Shutter Speed deve ser sempre o dobro do frame rate. Gravando em 24fps? Use 1/50s. Gravando em 30fps? Use 1/60s. Isso cria o motion blur natural que torna a imagem cinematográfica.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-img">
+          <img src="img/exposure_triangle.png" alt="Tríade da Exposição" />
+        </div>
+        <div class="section-img-caption">Diagrama da Tríade da Exposição — ISO, Diafragma e Obturador</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 2 =================== -->
+  <div class="page section-page day1 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 1 · Módulo 2</div>
+      <div class="section-time">10:30 – 12:30</div>
+      <h2 class="section-title">💡 O Domínio da Luz</h2>
+      <div class="section-icon">💡</div>
+    </div>
+    <div class="section-body img-left">
+      <div>
+        <div class="section-img">
+          <img src="img/lighting_diagram.png" alt="Esquema de Iluminação 3 Pontos" />
+        </div>
+        <div class="section-img-caption">Esquema clássico de 3 pontos de luz</div>
+      </div>
+      <div class="section-content">
+        <p class="content-intro">
+          A luz é a linguagem do cinema. Dominar a iluminação é o que transforma
+          qualquer espaço em um estúdio profissional e qualquer câmera em uma
+          ferramenta de resultado premium.
+        </p>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon">🔬</div>
+            <div class="topic-text">
+              <div class="topic-title">A Física da Iluminação na Prática</div>
+              <div class="topic-desc">Temperatura de cor (Kelvin), dureza e suavidade da luz, ângulo de incidência e como esses fatores moldam o rosto e a cena.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">1️⃣</div>
+            <div class="topic-text">
+              <div class="topic-title">Esquema de 1 Ponto</div>
+              <div class="topic-desc">A setup mais rápida e eficiente para conteúdo de alto impacto com equipamento mínimo.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">2️⃣</div>
+            <div class="topic-text">
+              <div class="topic-title">Esquema de 2 Pontos</div>
+              <div class="topic-desc">Key light + fill light: eliminando sombras indesejadas e criando volume facial profissional.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">3️⃣</div>
+            <div class="topic-text">
+              <div class="topic-title">Esquema de 3 Pontos</div>
+              <div class="topic-desc">A configuração completa: key, fill e backlight/rim light. Separação do sujeito, profundidade e acabamento cinematográfico.</div>
+            </div>
+          </li>
+        </ul>
+        <div class="highlight-box highlight-gold">
+          <div class="highlight-icon">☀️</div>
+          <div class="highlight-text"><strong>Luz Natural:</strong> A janela é sua melhor softbox. Aprenda a posicionar o sujeito em relação à janela para criar a iluminação natural mais flattering.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 3 =================== -->
+  <div class="page section-page day1 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 1 · Módulo 3</div>
+      <div class="section-time">13:30 – 14:30</div>
+      <h2 class="section-title">🎙️ Áudio e Cenografia</h2>
+      <div class="section-icon">🎙️</div>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <p class="content-intro">
+          O áudio ruim destrói uma imagem perfeita. O telespectador perdoa
+          imagem com qualidade média — mas jamais perdoa áudio ruim. Neste módulo
+          você aprende a captar áudio limpo e compor cenários de impacto.
+        </p>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon">🎤</div>
+            <div class="topic-text">
+              <div class="topic-title">Microfone Lapela (Lavalier)</div>
+              <div class="topic-desc">Posicionamento ideal, tratamento do cabo, evitando atrito e ruídos. Fio vs. sem fio: quando usar cada um.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">🔫</div>
+            <div class="topic-text">
+              <div class="topic-title">Microfone Shotgun</div>
+              <div class="topic-desc">Distância, ângulo e padrão polar. Como posicionar no boom ou on-camera para captar voz com rejeição de ambiente.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">🏠</div>
+            <div class="topic-text">
+              <div class="topic-title">Cenografia e Profundidade</div>
+              <div class="topic-desc">Como usar a profundidade do estúdio, planos de fundo, elementos em foreground e bokeh para criar cenários com identidade visual.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-img">
+          <img src="img/audio_setup.png" alt="Setup de Áudio Profissional" />
+        </div>
+        <div class="section-img-caption">Setup de captação de áudio para vídeo profissional</div>
+        <div class="highlight-box highlight-gold" style="margin-top:20px;">
+          <div class="highlight-icon">⚠️</div>
+          <div class="highlight-text"><strong>Regra de Ouro do Áudio:</strong> Sempre monitore com fone de ouvido durante a gravação. O que você ouve é o que está sendo gravado — não o que você acha que está sendo gravado.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 4 =================== -->
+  <div class="page section-page day1 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 1 · Módulo 4</div>
+      <div class="section-time">14:30 – 15:30</div>
+      <h2 class="section-title">🛒 Consultoria de Equipamentos<br/><span style="font-weight:400; font-size:0.7em; color: var(--gray);">O Guia de Investimento</span></h2>
+      <div class="section-icon">🛒</div>
+    </div>
+    <div class="section-body single-col">
+      <div>
+        <p class="content-intro">
+          Chega de comprar errado. Nesta consultoria individual, cada aluno recebe
+          um mapa personalizado de investimento baseado no seu orçamento atual,
+          nível de experiência e tipo de conteúdo que quer produzir.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(3,1fr); gap:18px; margin-bottom:24px;">
+          <div style="background: rgba(245,166,35,0.06); border: 1px solid rgba(245,166,35,0.2); border-radius:12px; padding:20px;">
+            <div style="font-size:2rem; margin-bottom:10px;">📱</div>
+            <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--gold);">Começar pelo Celular</div>
+            <div style="font-size:0.78rem; color:var(--gray); line-height:1.55;">Para quem está iniciando. Aprenda a extrair resultado profissional do smartphone antes de investir em câmera.</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px;">
+            <div style="font-size:2rem; margin-bottom:10px;">📷</div>
+            <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:8px;">Primeira Câmera</div>
+            <div style="font-size:0.78rem; color:var(--gray); line-height:1.55;">Qual corpo e qual lente comprar primeiro. A lente mais rentável para videomakers de conteúdo.</div>
+          </div>
+          <div style="background: rgba(74,143,226,0.06); border: 1px solid rgba(74,143,226,0.2); border-radius:12px; padding:20px;">
+            <div style="font-size:2rem; margin-bottom:10px;">🎬</div>
+            <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--blue-lt);">Setup Avançado</div>
+            <div style="font-size:0.78rem; color:var(--gray); line-height:1.55;">Para quem já tem equipamento básico. Como evoluir o setup para resultados de agência.</div>
+          </div>
+        </div>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon">💸</div>
+            <div class="topic-text">
+              <div class="topic-title">Análise Individual por Orçamento</div>
+              <div class="topic-desc">Cada aluno apresenta seu orçamento disponível e recebe uma lista priorizada de compras: o que comprar primeiro, o que pode esperar.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">🎙️</div>
+            <div class="topic-text">
+              <div class="topic-title">A Melhor Lente, Microfone e Iluminação</div>
+              <div class="topic-desc">Recomendações específicas para o momento atual do aluno — sem desperdício de dinheiro em equipamento que não vai usar.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 5 =================== -->
+  <div class="page section-page day1 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 1 · Módulo 5</div>
+      <div class="section-time">15:30 – 17:00</div>
+      <h2 class="section-title">🤖 Roteirização Estratégica com IA</h2>
+      <div class="section-icon">🤖</div>
+    </div>
+    <div class="section-body single-col">
+      <div>
+        <p class="content-intro">
+          A Inteligência Artificial não substitui o criador — ela acelera exponencialmente
+          sua produção. Neste módulo você aprende a usar IA como co-roteirista e domina
+          a estrutura PPP, que mantém o espectador preso do início ao fim.
+        </p>
+        <div class="ppp-grid">
+          <div class="ppp-card ppp-p">
+            <div class="ppp-letter">P</div>
+            <div class="ppp-name">Pergunta</div>
+            <div class="ppp-desc">Comece com a dor ou curiosidade do espectador. Uma pergunta poderosa ativa o loop de atenção instantaneamente.</div>
+          </div>
+          <div class="ppp-card ppp-pp">
+            <div class="ppp-letter">P</div>
+            <div class="ppp-name">Preview</div>
+            <div class="ppp-desc">Mostre o que o espectador vai ganhar ao continuar assistindo. Crie antecipação e senso de valor antes da entrega.</div>
+          </div>
+          <div class="ppp-card ppp-ppp">
+            <div class="ppp-letter">P</div>
+            <div class="ppp-name">Prova</div>
+            <div class="ppp-desc">Entregue o conteúdo prometido com evidências concretas: resultado, demonstração ou história real.</div>
+          </div>
+        </div>
+        <div class="highlight-box highlight-gold" style="margin-top:24px;">
+          <div class="highlight-icon">🔑</div>
+          <div class="highlight-text"><strong>A Chave da Estrutura PPP:</strong> Ela pode ser usada em qualquer ordem (PPA, APT, PRV...) e em qualquer posição do vídeo. O importante é que os três elementos estejam presentes — eles criam o loop de atenção que prende o espectador.</div>
+        </div>
+        <div class="highlight-box highlight-gold" style="margin-top:16px;">
+          <div class="highlight-icon">✅</div>
+          <div class="highlight-text"><strong>Entrega do Módulo:</strong> Ao final deste módulo, cada aluno terá seu roteiro finalizado e aprovado — o mesmo que será gravado no Dia 2.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 6 =================== -->
+  <div class="page section-page day1 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 1 · Módulo 6</div>
+      <div class="section-time">17:00 – 19:00</div>
+      <h2 class="section-title">🎭 Direção de Pessoas<br/><span style="font-weight:400; font-size:0.7em; color: var(--gray);">e Prática com Teleprompter</span></h2>
+      <div class="section-icon">🎭</div>
+    </div>
+    <div class="section-body single-col">
+      <div>
+        <p class="content-intro">
+          Câmera, luz e áudio perfeitos não salvam uma performance travada. A direção
+          é a habilidade mais rara — e mais valiosa — de um videomaker. Aqui você
+          aprende a destravar qualquer pessoa diante das câmeras.
+        </p>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon">🪑</div>
+            <div class="topic-text">
+              <div class="topic-title">O Aluno no Set</div>
+              <div class="topic-desc">Cada participante senta no set com o roteiro que acabou de criar. Prática real em ambiente de estúdio profissional.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">🔓</div>
+            <div class="topic-text">
+              <div class="topic-title">Como Destravar o Cliente</div>
+              <div class="topic-desc">Técnicas de aquecimento, respiração, quebra de bloqueio emocional e construção de confiança em frente à câmera. Funciona para você mesmo e para seus futuros clientes.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">👑</div>
+            <div class="topic-text">
+              <div class="topic-title">Posicionamento de Autoridade</div>
+              <div class="topic-desc">Postura corporal, contato visual com a lente, ritmo de fala e como projetar presença e credibilidade na câmera.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon">📜</div>
+            <div class="topic-text">
+              <div class="topic-title">Teleprompter na Prática</div>
+              <div class="topic-desc">Testes práticos de leitura fluida: velocidade, naturalidade, quebra da leitura mecânica. Apps gratuitos e profissionais de teleprompter.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== DIA 2 DIVIDER =================== -->
+  <div class="page day-divider day2-div fade-in" id="dia2">
+    <span class="day-divider-num">02</span>
+    <div class="day-divider-content">
+      <div class="day-divider-tag">🎬 Dia Dois</div>
+      <h2 class="day-divider-title">O Campo de Batalha</h2>
+      <p class="day-divider-sub">Gravação, edição e business. O dia focado na execução de alto nível — você grava, edita e aprende a transformar portfólio em contratos fechados.</p>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 7 =================== -->
+  <div class="page section-page day2 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 2 · Módulo 7</div>
+      <div class="section-time">09:00 – 12:30</div>
+      <h2 class="section-title" style="color: var(--white);">🎬 Gravação Real<br/><span style="font-weight:400; font-size:0.7em; color: var(--gray);">Construção do Portfólio</span></h2>
+      <div class="section-icon">🎬</div>
+    </div>
+    <div class="section-body single-col">
+      <div>
+        <p class="content-intro">
+          Chegou a hora de colocar em prática tudo que foi aprendido. Os alunos assumem
+          o controle total do estúdio e gravam seus vídeos de portfólio com direção profissional.
+        </p>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">🎯</div>
+            <div class="topic-text">
+              <div class="topic-title">Setup Completo pelo Aluno</div>
+              <div class="topic-desc">O aluno configura luz, câmera e áudio autonomamente — aplicando todo o conhecimento do Dia 1 em situação real.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">🎥</div>
+            <div class="topic-text">
+              <div class="topic-title">Gravação Definitiva do Roteiro</div>
+              <div class="topic-desc">Usando o roteiro criado no Dia 1, o aluno grava seu conteúdo com direção ativa — recebendo feedback em tempo real.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">👥</div>
+            <div class="topic-text">
+              <div class="topic-title">Dirigindo o Modelo Real</div>
+              <div class="topic-desc">Prática de direção com modelo ao vivo: aplicando as técnicas de destravamento e posicionamento de autoridade aprendidas no Dia 1.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">🏆</div>
+            <div class="topic-text">
+              <div class="topic-title">Material de Portfólio Real</div>
+              <div class="topic-desc">Ao final da manhã, cada aluno tem gravado o material bruto do seu primeiro vídeo profissional de portfólio.</div>
+            </div>
+          </li>
+        </ul>
+        <div class="highlight-box highlight-blue">
+          <div class="highlight-icon">⚡</div>
+          <div class="highlight-text"><strong>Resultado Concreto:</strong> Você sai deste bloco com material gravado em estúdio profissional, pronto para edição. Este é o conteúdo real que você usará para apresentar o seu trabalho a clientes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 8 =================== -->
+  <div class="page section-page day2 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 2 · Módulo 8</div>
+      <div class="section-time">13:30 – 17:30</div>
+      <h2 class="section-title" style="color: var(--white);">✂️ Pós-Produção e Fluxo de Trabalho</h2>
+      <div class="section-icon">✂️</div>
+    </div>
+    <div class="section-body img-left">
+      <div>
+        <div class="section-img">
+          <img src="img/editing_workspace.png" alt="Edição de Vídeo Profissional" />
+        </div>
+        <div class="section-img-caption">Fluxo de edição com Adobe Premiere Pro e CapCut Pro</div>
+      </div>
+      <div class="section-content">
+        <p class="content-intro">
+          Edição é onde o material bruto vira obra. Neste módulo você domina o fluxo
+          completo de pós-produção — do arquivo cru na câmera ao vídeo exportado e
+          pronto para publicação.
+        </p>
+        <ul class="topic-list">
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">📁</div>
+            <div class="topic-text">
+              <div class="topic-title">Transferência e Organização</div>
+              <div class="topic-desc">Estrutura de pastas profissional, nomenclatura de arquivos e backup — o workflow que evita perda de material e economiza horas.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">🎞️</div>
+            <div class="topic-text">
+              <div class="topic-title">Edição no Adobe Premiere</div>
+              <div class="topic-desc">Decupagem, ritmo de cortes, color grading básico e fluxo eficiente de edição para conteúdo digital.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">📲</div>
+            <div class="topic-text">
+              <div class="topic-title">CapCut Pro para Conteúdo Social</div>
+              <div class="topic-desc">Edição rápida e eficiente para Reels, Shorts e TikTok — com legendas automáticas e exportação otimizada.</div>
+            </div>
+          </li>
+          <li class="topic-item">
+            <div class="topic-icon" style="background: rgba(74,143,226,0.15);">📤</div>
+            <div class="topic-text">
+              <div class="topic-title">Exportação Final</div>
+              <div class="topic-desc">Configurações de exportação para cada plataforma: YouTube, Instagram, TikTok. Resolução, codec, bitrate e tamanho ideal.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== MÓDULO 9 =================== -->
+  <div class="page section-page day2 fade-in">
+    <div class="section-header">
+      <div class="section-day-label">Dia 2 · Módulo 9</div>
+      <div class="section-time">17:30 – 19:00</div>
+      <h2 class="section-title" style="color: var(--white);">💼 O Módulo Business<br/><span style="font-weight:400; font-size:0.7em; color: var(--gray);">A Arte de Vender</span></h2>
+      <div class="section-icon">💼</div>
+    </div>
+    <div class="section-body single-col">
+      <div>
+        <p class="content-intro">
+          Ter habilidade técnica é metade do caminho. A outra metade é transformar
+          essa habilidade em contratos e renda recorrente. Neste módulo, décadas de
+          experiência em vendas são condensadas em estratégias práticas para o
+          mercado audiovisual digital.
+        </p>
+        <div class="business-grid">
+          <div class="biz-card">
+            <div class="biz-num">01</div>
+            <div class="biz-title">🤝 Primeira Abordagem</div>
+            <div class="biz-desc">Scripts e técnicas para prospectar clientes com naturalidade. Como apresentar seu trabalho sem soar desesperado ou amador.</div>
+          </div>
+          <div class="biz-card">
+            <div class="biz-num">02</div>
+            <div class="biz-title">🤝 Parcerias Estratégicas</div>
+            <div class="biz-desc">Como identificar e criar parcerias que geram caixa rápido. Agências, fotógrafos, marketing digital e influencers como canal de vendas.</div>
+          </div>
+          <div class="biz-card">
+            <div class="biz-num">03</div>
+            <div class="biz-title">💰 Precificação por Valor</div>
+            <div class="biz-desc">Como precificar seus serviços baseado no valor que você entrega — e não no tempo que você gasta. A diferença entre amador e profissional.</div>
+          </div>
+          <div class="biz-card">
+            <div class="biz-num">04</div>
+            <div class="biz-title">🏆 Técnicas de Negociação</div>
+            <div class="biz-desc">Objeções comuns e como respondê-las. Como conduzir a negociação com confiança e fechar contratos no valor que você merece.</div>
+          </div>
+        </div>
+        <div class="highlight-box highlight-blue" style="margin-top:24px;">
+          <div class="highlight-icon">🚀</div>
+          <div class="highlight-text"><strong>Entrega Final:</strong> Ao final desta imersão, você sai com portfólio na mão, workflow definido, precificação estabelecida e um plano de ação concreto para fechar seus primeiros (ou próximos) contratos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- =================== CLOSING =================== -->
+  <div class="page closing-page fade-in">
+    <div class="closing-glow"></div>
+    <div class="closing-content">
+      <div class="closing-icon">🎬</div>
+      <h2 class="closing-title">Você chegou até aqui.<br/>Agora é hora de gravar.</h2>
+      <p class="closing-sub">
+        Conhecimento sem execução é apenas entretenimento. 
+        Use este material como referência permanente — mas lembre-se: 
+        a câmera só vai te transformar se você apertar o botão REC.
+      </p>
+      <div class="closing-divider"></div>
+      <p class="closing-quote">
+        O melhor equipamento do mundo é aquele que você usa. A melhor câmera é a próxima que você ligar.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /main-wrapper -->
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
+
