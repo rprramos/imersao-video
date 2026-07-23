@@ -779,6 +779,164 @@
       opacity: 1;
       transform: translateY(0);
     }
+    /* ============================================
+       COVER FOOTER INFO (local + preço)
+    ============================================ */
+    .cover-footer-info {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .cover-info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cover-info-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .cover-info-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .cover-info-value {
+      font-size: 0.78rem;
+      color: rgba(240,238,233,0.75);
+      line-height: 1.4;
+    }
+    .cover-info-value strong { color: var(--white); }
+    .cover-info-or {
+      color: var(--gray);
+      font-style: italic;
+      margin: 0 4px;
+    }
+    .cover-info-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(245,166,35,0.2);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       INFO CARD PAGE (local + preço)
+    ============================================ */
+    .info-card-page {
+      background: var(--dark-3);
+      padding: 40px 56px;
+    }
+    .info-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .info-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 32px 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .info-card:hover { border-color: rgba(245,166,35,0.25); }
+    .info-card-price { border-color: rgba(245,166,35,0.2); background: rgba(245,166,35,0.04); }
+    .info-card-icon { font-size: 2rem; margin-bottom: 4px; }
+    .info-card-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .info-card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-top: 4px;
+    }
+    .info-card-desc {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-top: 4px;
+    }
+    .info-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid rgba(245,166,35,0.3);
+      padding: 7px 16px;
+      border-radius: 8px;
+      width: fit-content;
+      transition: background 0.2s;
+    }
+    .info-card-link:hover { background: rgba(245,166,35,0.1); }
+    .info-card-price-main {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      margin-top: 6px;
+    }
+    .info-card-price-sub {
+      font-size: 0.82rem;
+      color: rgba(240,238,233,0.6);
+      margin-top: 2px;
+    }
+    .info-card-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(245,166,35,0.3);
+      border-radius: 2px;
+      margin: 10px 0;
+    }
+    .info-card-parcelado {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .parcelado-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    .parcelado-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--white);
+    }
+    .parcelado-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .info-card-obs {
+      font-size: 0.7rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    /* Responsivo info-card */
+    @media (max-width: 768px) {
+      .info-card-page { padding: 28px 20px; }
+      .info-card-grid { grid-template-columns: 1fr; }
+      .cover-footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .cover-info-divider { display: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -837,12 +995,54 @@
     </div>
 
     <div class="cover-footer">
-      <div class="cover-author">
-        Material desenvolvido para uso exclusivo dos participantes
+      <div class="cover-footer-info">
+        <div class="cover-info-item">
+          <span class="cover-info-icon">📍</span>
+          <div>
+            <div class="cover-info-label">Local</div>
+            <div class="cover-info-value">Shopping Città America · Av. das Américas, 700 · Barra da Tijuca, RJ</div>
+          </div>
+        </div>
+        <div class="cover-info-divider"></div>
+        <div class="cover-info-item">
+          <span class="cover-info-icon">💰</span>
+          <div>
+            <div class="cover-info-label">Investimento</div>
+            <div class="cover-info-value"><strong>R$ 1.950,00</strong> à vista no PIX <span class="cover-info-or">ou</span> 12× de R$ 200,00</div>
+          </div>
+        </div>
       </div>
       <div class="cover-days">
         <span class="day-tag d1">📷 Dia 1 — Fundamentos</span>
         <span class="day-tag d2">🎬 Dia 2 — Campo de Batalha</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- ===================== INFO CARD ===================== -->
+  <div class="page info-card-page fade-in">
+    <div class="info-card-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <div class="info-card-label">Local do Treinamento</div>
+        <div class="info-card-title">Estúdio no Shopping Città America</div>
+        <div class="info-card-desc">Avenida das Américas, 700<br/>Barra da Tijuca · Rio de Janeiro – RJ</div>
+        <a class="info-card-link" href="https://maps.google.com/?q=Shopping+Citta+America+Av.+das+Americas+700+Barra+da+Tijuca+Rio+de+Janeiro" target="_blank">🗺️ Ver no mapa</a>
+      </div>
+      <div class="info-card info-card-price">
+        <div class="info-card-icon">💳</div>
+        <div class="info-card-label">Investimento</div>
+        <div class="info-card-price-main">R$ 1.950<span style="font-size:1.2rem;font-weight:600;">,00</span></div>
+        <div class="info-card-price-sub">à vista no PIX</div>
+        <div class="info-card-divider"></div>
+        <div class="info-card-parcelado">
+          <span class="parcelado-label">ou parcelado em</span>
+          <span class="parcelado-num">12×</span>
+          <span class="parcelado-value">R$ 200,00</span>
+        </div>
+        <div class="info-card-obs">* parcelamento com acréscimo</div>
       </div>
     </div>
   </div>
