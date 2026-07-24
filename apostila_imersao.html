@@ -184,12 +184,8 @@
     ============================================ */
     .cover-page {
       background: var(--dark-2);
-      min-height: 580px;
       position: relative;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       margin-top: 80px;
     }
 
@@ -216,7 +212,7 @@
     .cover-content {
       position: relative;
       z-index: 2;
-      padding: 60px 64px 0;
+      padding: 48px 56px 48px;
     }
 
     .cover-badge {
@@ -268,13 +264,13 @@
       color: rgba(240,238,233,0.7);
       max-width: 520px;
       font-weight: 400;
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
 
     .cover-stats {
       display: flex;
       gap: 40px;
-      margin-bottom: 48px;
+      margin-bottom: 0;
     }
     .stat-item { display: flex; flex-direction: column; }
     .stat-number {
@@ -939,7 +935,7 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px 16px;
-        margin-bottom: 28px;
+        margin-bottom: 0;
       }
       .stat-number { font-size: 1.6rem; }
       .stat-label { font-size: 0.68rem; }
