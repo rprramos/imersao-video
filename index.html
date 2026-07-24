@@ -926,8 +926,101 @@
       margin-top: 4px;
     }
 
+    /* ============================================
+       TESTIMONIALS SECTION
+    ============================================ */
+    .testimonials-page {
+      background: var(--dark-3);
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .testimonial-card:hover {
+      border-color: rgba(245,166,35,0.3);
+      transform: translateY(-2px);
+    }
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(245,166,35,0.12);
+      border: 1px solid rgba(245,166,35,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .testimonial-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--white);
+      line-height: 1.2;
+    }
+    .testimonial-tag {
+      font-size: 0.72rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 177.77%; /* 9:16 aspect ratio */
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--dark-2);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+    .testimonial-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(245,166,35,0.06);
+      border: 1px solid rgba(245,166,35,0.15);
+      transition: background 0.2s;
+    }
+    .testimonial-link:hover {
+      background: rgba(245,166,35,0.15);
+    }
+
     /* Responsivo capa e info-card */
     @media (max-width: 768px) {
+      .testimonials-page-inner { padding: 28px 20px !important; }
+      .testimonials-grid { grid-template-columns: 1fr; gap: 20px; }
       .cover-content { padding: 36px 20px 28px; }
       .cover-title { font-size: 2.3rem; margin-bottom: 16px; }
       .cover-subtitle { font-size: 0.95rem; margin-bottom: 28px; }
@@ -959,6 +1052,7 @@
     <span></span>
   </button>
   <div class="nav-links">
+    <a href="#depoimentos">Depoimentos</a>
     <a href="#dia1">Dia 1</a>
     <a href="#dia2">Dia 2</a>
     <a href="#cronograma">Cronograma</a>
@@ -1003,6 +1097,70 @@
       </div>
     </div>
 
+  </div>
+
+  <div class="page-sep"></div>
+
+  <!-- ===================== DEPOIMENTOS ===================== -->
+  <div class="page testimonials-page fade-in" id="depoimentos">
+    <div class="testimonials-page-inner" style="padding: 40px 48px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 24px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:4px;">💬 Prova Real de Quem Já Fez</div>
+          <h2 style="font-family:'Outfit',sans-serif; font-size:1.6rem; font-weight:800; color:var(--white);">Depoimentos de Alunos</h2>
+        </div>
+        <div style="font-size:0.8rem; color:var(--gray); background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:100px; display:inline-flex; align-items:center; gap:6px;">
+          <span>⭐</span> <span>Experiências Reais na Imersão</span>
+        </div>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Card 1: Duda -->
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">👩‍🎓</div>
+            <div>
+              <div class="testimonial-name">Depoimento da Duda</div>
+              <div class="testimonial-tag">Aluna da Imersão</div>
+            </div>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/eshrmtfnT9w" title="Depoimento da Duda" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtube.com/shorts/eshrmtfnT9w" target="_blank" class="testimonial-link">▶ Assistir no YouTube</a>
+        </div>
+
+        <!-- Card 2: Andrea Dia 1 -->
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">👩‍💼</div>
+            <div>
+              <div class="testimonial-name">Depoimento da Andrea</div>
+              <div class="testimonial-tag">Dia 1 · Prática e Evolução</div>
+            </div>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/12-VkaUZkJQ" title="Depoimento da Andrea - Dia 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtube.com/shorts/12-VkaUZkJQ" target="_blank" class="testimonial-link">▶ Assistir no YouTube</a>
+        </div>
+
+        <!-- Card 3: Andrea Dia 2 (com Filho) -->
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">👩‍👦</div>
+            <div>
+              <div class="testimonial-name">Andrea e Filho</div>
+              <div class="testimonial-tag">Dia 2 · Experiência em Família</div>
+            </div>
+          </div>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/wPEwpO40OfQ" title="Depoimento da Andrea - Dia 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtube.com/shorts/wPEwpO40OfQ?feature=share" target="_blank" class="testimonial-link">▶ Assistir no YouTube</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="page-sep"></div>
