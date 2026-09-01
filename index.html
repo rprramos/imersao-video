@@ -1037,13 +1037,19 @@
       .stat-number { font-size: 1.6rem; }
       .stat-label { font-size: 0.68rem; }
 
+      .info-card-page { padding: 28px 20px; }
+      .info-card-grid { grid-template-columns: 1fr; }
+      .cover-footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .cover-info-divider { display: none; }
+    }
+
     /* Floating Action Buttons */
     .floating-btn-left {
       position: fixed;
       bottom: 24px;
       left: 24px;
-      z-index: 999;
-      background: rgba(22, 22, 37, 0.85);
+      z-index: 9999;
+      background: rgba(22, 22, 37, 0.9);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(245, 166, 35, 0.4);
@@ -1057,7 +1063,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
       text-decoration: none;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       opacity: 0;
@@ -1070,18 +1076,18 @@
       transform: translateY(0);
     }
     .floating-btn-left:hover {
-      background: rgba(245, 166, 35, 0.15);
+      background: rgba(245, 166, 35, 0.2);
       border-color: var(--gold);
       color: #fff;
       transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(245, 166, 35, 0.25);
+      box-shadow: 0 12px 28px rgba(245, 166, 35, 0.3);
     }
 
     .floating-btn-right {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      z-index: 999;
+      z-index: 9999;
       background: linear-gradient(135deg, #25D366, #128C7E);
       color: #ffffff !important;
       padding: 12px 20px;
@@ -1093,12 +1099,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .floating-btn-right:hover {
       transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+      box-shadow: 0 12px 32px rgba(37, 211, 102, 0.7);
       color: #ffffff !important;
     }
     .floating-btn-right svg {
@@ -2031,14 +2037,18 @@
   // Scroll to Top Button
   const btnScrollTop = document.getElementById('btnScrollTop');
   if (btnScrollTop) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY || document.documentElement.scrollTop || 0;
+      if (scrollPos > 150) {
         btnScrollTop.classList.add('visible-btn');
       } else {
         btnScrollTop.classList.remove('visible-btn');
       }
-    });
-    btnScrollTop.addEventListener('click', () => {
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    btnScrollTop.addEventListener('click', (e) => {
+      e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
