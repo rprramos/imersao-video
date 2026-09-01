@@ -1048,11 +1048,11 @@
       position: fixed;
       bottom: 24px;
       left: 24px;
-      z-index: 9999;
-      background: rgba(22, 22, 37, 0.9);
+      z-index: 99999;
+      background: rgba(22, 22, 37, 0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(245, 166, 35, 0.4);
+      border: 1px solid rgba(245, 166, 35, 0.5);
       color: var(--gold);
       padding: 12px 18px;
       border-radius: 100px;
@@ -1066,14 +1066,8 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
       text-decoration: none;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(10px);
-    }
-    .floating-btn-left.visible-btn {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(0);
     }
     .floating-btn-left:hover {
       background: rgba(245, 166, 35, 0.2);
@@ -1998,7 +1992,7 @@
   <span>⬆</span> Voltar ao topo
 </button>
 
-<a href="https://api.whatsapp.com/send?text=Olá!%20Gostaria%20de%20tirar%20dúvidas%20sobre%20a%20Imersão%20em%20Vídeo" target="_blank" class="floating-btn-right" aria-label="Falar no WhatsApp">
+<a href="https://api.whatsapp.com/send?phone=5521979223500&text=Olá!%20Gostaria%20de%20tirar%20dúvidas%20sobre%20a%20Imersão%20em%20Vídeo" target="_blank" class="floating-btn-right" aria-label="Falar no WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.758.459 3.474 1.33 4.988l-1.413 5.164 5.282-1.386c1.46.797 3.107 1.217 4.788 1.218h.003c5.504 0 9.987-4.479 9.988-9.986 0-2.667-1.038-5.174-2.924-7.062a9.923 9.923 0 0 0-7.064-2.922zm5.83 14.391c-.247.697-1.433 1.328-1.996 1.413-.518.077-1.196.11-1.928-.124-.442-.142-1.012-.328-1.743-.645-3.08-1.335-5.088-4.48-5.243-4.686-.153-.206-1.258-1.674-1.258-3.193 0-1.518.796-2.266 1.077-2.573.282-.307.615-.384.82-.384.205 0 .41.002.589.01.192.008.448-.073.702.538.26.623.886 2.16.963 2.317.077.158.128.342.025.547-.102.205-.153.333-.307.513-.154.18-.323.402-.461.54-.154.153-.314.32-.135.627.179.307.794 1.31 1.704 2.121 1.171 1.042 2.16 1.365 2.467 1.519.307.154.486.128.666-.077.179-.205.768-.896.973-1.203.205-.307.41-.256.691-.153.282.102 1.792.845 2.099.998.307.154.512.23.589.358.077.129.077.747-.17 1.444z"/></svg>
   <span>Falar no WhatsApp</span>
 </a>
@@ -2037,16 +2031,6 @@
   // Scroll to Top Button
   const btnScrollTop = document.getElementById('btnScrollTop');
   if (btnScrollTop) {
-    const handleScroll = () => {
-      const scrollPos = window.scrollY || document.documentElement.scrollTop || 0;
-      if (scrollPos > 150) {
-        btnScrollTop.classList.add('visible-btn');
-      } else {
-        btnScrollTop.classList.remove('visible-btn');
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
     btnScrollTop.addEventListener('click', (e) => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
