@@ -1126,12 +1126,12 @@
     }
 
     /* ===== AULA PRÁTICA ===== */
-    .pratica-inner { display:grid; grid-template-columns: 1fr 320px; gap:40px; align-items:center; padding:40px 48px; }
+    .pratica-inner { display:grid; grid-template-columns: 1fr; gap:32px; padding:40px 48px; }
     .pratica-text { max-width: 720px; }
-    .pratica-list { list-style:none; margin-top:18px; display:grid; grid-template-columns:1fr; gap:10px; }
+    .pratica-list { list-style:none; margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:10px 28px; }
     .pratica-list li { position:relative; padding-left:26px; color:var(--white); }
     .pratica-list li::before { content:'✓'; position:absolute; left:0; color:var(--gold); font-weight:800; }
-    .pratica-videos { display:grid; grid-template-columns:1fr; gap:24px; max-width:320px; }
+    .pratica-videos { display:grid; grid-template-columns:repeat(2, 1fr); gap:24px; max-width:640px; }
     .pratica-video { margin:0; }
     .pratica-video video, .pratica-video iframe { width:100%; aspect-ratio:9/16; object-fit:cover; border:0; border-radius:16px; background:#000; outline:1px solid rgba(245,166,35,0.25); box-shadow:0 20px 50px rgba(0,0,0,0.45); display:block; }
     .pratica-video figcaption { margin-top:10px; font-size:0.8rem; color:var(--gray); text-align:center; }
@@ -1140,7 +1140,7 @@
       .pratica-list { grid-template-columns:1fr; }
       .pratica-videos { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:14px; margin:0 -20px; padding:0 20px 8px; scrollbar-width:none; }
       .pratica-videos::-webkit-scrollbar { display:none; }
-      .pratica-video { flex:0 0 100%; max-width:360px; margin:0 auto; scroll-snap-align:center; }
+      .pratica-video { flex:0 0 72%; scroll-snap-align:center; }
     }
   </style>
 </head>
@@ -1312,7 +1312,6 @@
           <li>Captação em evento real, no meio da ação</li>
           <li>Gravação de cliente no próprio consultório</li>
           <li>Gravação com celular, do jeito que você vai trabalhar</li>
-          <li>Stands, ambiente e o momento principal do evento</li>
           <li>Orientação do Rodrigo durante a gravação</li>
         </ul>
       </div>
@@ -1320,6 +1319,10 @@
         <figure class="pratica-video">
           <iframe src="https://www.youtube.com/embed/1ZUAKBhZtD4?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Bastidores da Andrea" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
           <figcaption>Bastidores - Andrea cobrindo um evento</figcaption>
+        </figure>
+        <figure class="pratica-video">
+          <iframe src="https://www.youtube.com/embed/mfk40ABCh-U?rel=0&amp;modestbranding=1&amp;playsinline=1" title="Bastidores da Duda gravando um cliente na clínica" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+          <figcaption>Bastidores - Duda gravando um cliente na clínica</figcaption>
         </figure>
       </div>
     </div>
